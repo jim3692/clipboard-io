@@ -1,0 +1,40 @@
+{
+  "name": "clipboard-io",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fastify": "^3.23.0",
+    "fastify-formbody": "^5.1.0",
+    "fastify-socket.io": "^2.0.1",
+    "fastify-static": "^4.5.0",
+    "rxjs": "^7.4.0",
+    "socket-io": "^1.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/eslint-parser": "^7.16.0",
+    "eslint-plugin-html": "^6.2.0",
+    "standardx": "^7.0.0"
+  },
+  "babel": {},
+  "eslintConfig": {
+    "parser": "@babel/eslint-parser",
+    "parserOptions": {
+      "ecmaVersion": 2021,
+      "sourceType": "module",
+      "allowImportExportEverywhere": true,
+      "requireConfigFile": false
+    },
+    "plugins": [
+      "html"
+    ]
+  }
+}
