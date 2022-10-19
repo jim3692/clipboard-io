@@ -1,5 +1,7 @@
 import OpenCrypto from 'https://cdn.jsdelivr.net/npm/opencrypto@1.5.5/src/OpenCrypto.min.js'
 
+const CHUNK_SIZE = 100
+
 const url = new URL(window.location)
 const channelId = url.searchParams.get('channel_id')
 const token = url.searchParams.get('token')
@@ -82,7 +84,6 @@ async function onPem (pem) {
 
       const chunks = []
 
-      const CHUNK_SIZE = 50 + Math.floor(Math.random() * 50)
       for (let i = 0; i < encoded.byteLength; i += CHUNK_SIZE) {
         const chunk = encoded.subarray(i, i + CHUNK_SIZE)
         chunks.push(chunk)
