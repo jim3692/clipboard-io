@@ -1,6 +1,9 @@
 import OpenCrypto from 'https://cdn.jsdelivr.net/npm/opencrypto@1.5.5/src/OpenCrypto.min.js'
 
 const SERVER = 'ntfy.sh'
+const HTTP_ENDPOINT = `https://${SERVER}`
+const WS_ENDPOINT = `wss://${SERVER}`
+
 const CHANNEL_PREFIX = 'jim3692cbio'
 
 const CHANNEL_LENGTH = 4
@@ -39,7 +42,7 @@ export default class ClipTransport {
       this.socket.close()
     }
 
-    this.socket = new window.WebSocket(`wss://${SERVER}/${this.channelId}/ws`)
+    this.socket = new window.WebSocket(`${WS_ENDPOINT}/${this.channelId}/ws`)
 
     this.socket.addEventListener('open', this.onSocketConnected.bind(this))
     this.socket.addEventListener('close', this.onSocketClosed.bind(this))
@@ -96,7 +99,7 @@ export default class ClipTransport {
 
     const signature = await this.signData({ header, data })
 
-    await window.fetch(`https://${SERVER}/${this.channelId}`, {
+    await window.fetch(`${HTTP_ENDPOINT}/${this.channelId}`, {
       method: 'POST',
       body: JSON.stringify({ header, data, signature })
     })
