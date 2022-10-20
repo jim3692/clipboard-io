@@ -1,9 +1,3 @@
-FROM node:14-alpine
+FROM httpd:2.4
 
-WORKDIR /app
-COPY package*.json ./
-CMD [ "npm", "start" ]
-
-RUN npm ci
-
-COPY . .
+COPY . /usr/local/apache2/htdocs/

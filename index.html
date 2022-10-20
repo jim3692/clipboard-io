@@ -10,7 +10,7 @@
 
 <body style="margin: 0; height: 100vh; display: flex;">
     <div style="margin: auto; display: flex; flex-direction: column;">
-        <div id="qr" style="margin: auto;"></div>
+        <div id="qr" style="margin: auto; padding: 8px; background-color: white !important;"></div>
 
         <div style="text-align: center; vertical-align: middle; margin-top: 1rem;">
             <input id="value" type="password" style="font-size: 1rem;" readonly />
@@ -21,8 +21,7 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js'
         integrity='sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA=='
         crossorigin='anonymous'></script>
-    <script src="/socket.io/socket.io.js"></script>
-    <script type="module" src="/static/qr.js"></script>
+    <script type="module" src="/assets/qr.js"></script>
 </body>
 
 </html>
