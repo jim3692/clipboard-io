@@ -3,6 +3,7 @@ import ClipTransport from './transport.js'
 
 const valueEl = document.getElementById('value')
 const visibleEl = document.getElementById('visible')
+const qrEl = document.getElementById('qr')
 
 valueEl.onmouseover = () => {
   valueEl.select()
@@ -14,6 +15,13 @@ valueEl.onclick = () => {
 
 visibleEl.onclick = () => {
   valueEl.setAttribute('type', visibleEl.checked ? 'text' : 'password')
+}
+
+qrEl.onclick = () => {
+  const url = qrEl.getAttribute('title')
+  if (url) {
+    navigator.clipboard.writeText(url)
+  }
 }
 
 const qrcode = new window.QRCode('qr', {
