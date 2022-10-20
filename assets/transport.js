@@ -17,13 +17,28 @@ const crypt = new OpenCrypto()
 
 export default class ClipTransport {
   constructor ({ channelId, token, salt, onSocketConnected, onSocketData }) {
-    const isServer = !channelId
+    // Used for debugging
+    // window.clipTransport = this
 
     this.channelId = channelId
     this.token = token
     this.salt = salt
-    this.messageCounter = isServer ? 0 : 1
-    this.sender = isServer ? SENDER_SERVER : SENDER_CLIENT
+
+    // Server generates the clientId
+    const isServer = !channelId
+
+    // Prevent messages being sent from an instance, being handled from the same
+    this.peerName = isServer ? SENDER_SERVER : SENDER_CLIENT
+
+    // Synchronization
+    this.messageCounter = 0
+    this.messageAttempt = 0
+
+    // Prevent payload duplication when retrying to send a message
+    this.lastAcknowledgedAttempt = -1
+
+    // Prevent new messages from being handled when out of sync
+    this.waitingForAcknowledgement = false
 
     this.onSocketConnected = onSocketConnected
     this.onSocketData = onSocketData
@@ -60,48 +75,114 @@ export default class ClipTransport {
     try {
       const payload = JSON.parse(data)
 
-      if (!payload?.header || payload.header.sender === this.sender) {
+      // Discard malformed payloads
+      if (!payload?.header || !payload?.data || !payload?.signature) {
+        console.log('Invalid payload')
         return
       }
 
-      if (!payload.data || !payload.signature || !this.validateData(payload)) {
+      // Discard messages with invalid signature
+      if (!this.validateData(payload)) {
         console.log('Invalid signature')
         return
       }
 
+      // Discard messages sent from this instance
+      if (payload.header.sender === this.peerName) {
+        return
+      }
+
+      // Discard messages with wrong token
       if (!payload.header.token || payload.header.token !== this.token) {
         console.log('Invalid token', payload.header.token)
         return
       }
 
-      if (payload.header.counter !== this.messageCounter + 1) {
+      // Handle ACK for last sent message
+      if (payload.data.ack && payload.header.counter === this.messageCounter) {
+        console.log('ACK', payload.header.counter)
+        this.messageCounter++
+        this.messageAttempt = 0
+        this.lastAcknowledgedAttempt = -1
+        this.waitingForAcknowledgement = false
+        return
+      }
+
+      // Resend ACK for the last handled message
+      if (payload.header.counter === this.messageCounter - 1 && payload.header.attempt > this.lastAcknowledgedAttempt) {
+        this.lastAcknowledgedAttempt = payload.header.attempt
+        this.send({ ack: 1 }, { attempt: payload.header.attempt, counter: payload.header.counter })
+        return
+      }
+
+      // Abort if ACK has not been received for last message
+      if (this.waitingForAcknowledgement) {
+        console.log('waitingForAcknowledgement', this)
+        return
+      }
+
+      // Validate message counter
+      if (payload.header.counter !== this.messageCounter) {
         console.log('Invalid counter', payload.header.counter)
         return
       }
 
-      this.messageCounter += 2
+      this.send({ ack: 1 })
+      this.messageCounter++
       this.onSocketData(payload.data)
     } catch (err) {
       console.dir({ error: err.message, get data () { return data } })
     }
   }
 
-  onSocketClosed () {
+  async onSocketClosed () {
+    await this.waitMs(5000)
     this.connectToSocket()
   }
 
-  async send (data) {
+  async send (data, { attempt, counter } = {}) {
     const header = {
       token: this.token,
-      counter: this.messageCounter,
-      sender: this.sender
+      sender: this.peerName,
+      counter: counter || this.messageCounter,
+      attempt: attempt || this.messageAttempt
     }
 
+    if (this.waitingForAcknowledgement && !data.ack && attempt === 0) {
+      return await this.sendLater(data)
+    }
+
+    this.messageAttempt = header.attempt
     const signature = await this.signData({ header, data })
 
     await window.fetch(`${HTTP_ENDPOINT}/${this.channelId}`, {
       method: 'POST',
       body: JSON.stringify({ header, data, signature })
+    })
+
+    if (!data.ack) {
+      this.waitingForAcknowledgement = true
+    }
+
+    await this.resendLater({ header, data })
+  }
+
+  async resendLater ({ header, data }) {
+    await this.waitMs(10000)
+    header.attempt++
+    if (this.waitingForAcknowledgement && this.messageCounter === header.counter) {
+      return await this.send(data, { attempt: header.attempt, counter: header.counter })
+    }
+  }
+
+  async sendLater (data) {
+    await this.waitMs(10000)
+    await this.send(data)
+  }
+
+  waitMs (ms) {
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(), ms)
     })
   }
 
