@@ -4,9 +4,9 @@ import ClipTransport from './transport.js'
 const CHUNK_SIZE = 100
 
 const url = new URL(window.location)
-const channelId = url.searchParams.get('channel_id')
-const token = url.searchParams.get('token')
-const salt = url.searchParams.get('salt')
+const channelId = url.searchParams.get('c')
+const token = url.searchParams.get('t')
+const salt = url.searchParams.get('s')
 
 const crypt = new OpenCrypto()
 

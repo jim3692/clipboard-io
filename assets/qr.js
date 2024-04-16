@@ -43,7 +43,7 @@ await transport.init()
 async function onSocketConnected () {
   const qrUrl = new URL(window.location)
   qrUrl.pathname = '/send.html'
-  qrUrl.search = `channel_id=${transport.channelId}&token=${transport.token}&salt=${transport.salt}`
+  qrUrl.search = `c=${transport.channelId}&t=${transport.token}&s=${transport.salt}`
 
   console.log(qrUrl.href)
 

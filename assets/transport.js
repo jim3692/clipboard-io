@@ -4,11 +4,9 @@ const SERVER = 'ntfy.sh'
 const HTTP_ENDPOINT = `https://${SERVER}`
 const WS_ENDPOINT = `wss://${SERVER}`
 
-const CHANNEL_PREFIX = 'jim3692cbio'
-
-const CHANNEL_LENGTH = 4
+const CHANNEL_LENGTH = 8
 const TOKEN_LENGTH = 8
-const SALT_LENGTH = 16
+const SALT_LENGTH = 24
 
 const SENDER_SERVER = 'server'
 const SENDER_CLIENT = 'client'
@@ -197,7 +195,7 @@ export default class ClipTransport {
 
   async generateChannelId () {
     const randomString = await this.generateRandomString(CHANNEL_LENGTH)
-    return CHANNEL_PREFIX + randomString
+    return randomString
   }
 
   async signData ({ header, data }) {
