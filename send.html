@@ -2,29 +2,39 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Send Text</title>
 
-    <style>
-        .hidden {
-            display: none !important;
-        }
-    </style>
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/opencrypto@1.5.5/src/OpenCrypto.min.js" as="script"
+    integrity="sha384-GozDvWXUQd/xkCrCh2FYnyNEJTcjZb6Dc8QWis4KQTJNluSN6ly0enjGY0VpbLeJ" crossorigin="anonymous" />
+  <link rel="preload" href="/assets/qr.js" as="script" />
+
+  <style>
+    * {
+      /* --bs-font-sans-serif from Bootstrap 5 */
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
 </head>
 
 <body style="margin: 0; height: 100vh; display: flex;">
-    <form class="hidden" action="#" method="post" style="margin: auto; text-align: center;">
-        <div>
-            <input type="password" name="data" style="font-size: 1.5rem;" />
-        </div>
-        <div style="margin-top: 0.5rem;">
-            <input type="submit" value="Send" style="font-size: 1.5rem;" />
-        </div>
-    </form>
+  <form class="hidden" action="#" method="post" style="margin: auto; text-align: center;">
+    <div style="margin-bottom: 0.5rem;">Enter text to send</div>
+    <div style="margin-bottom: 0.5rem;">
+      <input type="password" name="data" style="font-size: 1.5rem;" />
+    </div>
+    <div style="margin-bottom: 0.5rem;">
+      <input type="submit" value="Send" style="font-size: 1.5rem;" />
+    </div>
+  </form>
 
-    <script type="module" src="/assets/send.js"></script>
+  <script type="module" src="/assets/send.js"></script>
 </body>
 
 </html>
