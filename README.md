@@ -19,3 +19,9 @@ Instead of having to login to your password manager to copy that one password yo
 - [ntfy.sh](https://ntfy.sh)
 - [OpenCrypto](https://github.com/safebash/opencrypto)
 - [qrcodejs](https://github.com/davidshimjs/qrcodejs)
+
+## Lib Sources
+
+- [bootstrap.min.css](https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css) - MIT License
+- [OpenCrypto.min.js](https://cdn.jsdelivr.net/npm/opencrypto@1.5.5/src/OpenCrypto.min.js) - MIT License
+- [qrcode.min.js](https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js) - MIT License

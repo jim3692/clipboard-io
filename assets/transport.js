@@ -1,4 +1,4 @@
-import OpenCrypto from 'https://cdn.jsdelivr.net/npm/opencrypto@1.5.5/src/OpenCrypto.min.js'
+import OpenCrypto from '/lib/OpenCrypto.min.js'
 
 const SERVER = 'ntfy.sh'
 const HTTP_ENDPOINT = `https://${SERVER}`

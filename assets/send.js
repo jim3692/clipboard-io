@@ -1,4 +1,4 @@
-import OpenCrypto from 'https://cdn.jsdelivr.net/npm/opencrypto@1.5.5/src/OpenCrypto.min.js'
+import OpenCrypto from '/lib/OpenCrypto.min.js'
 import ClipTransport from './transport.js'
 
 const CHUNK_SIZE = 100
