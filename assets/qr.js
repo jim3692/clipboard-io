@@ -25,8 +25,8 @@ qrEl.onclick = () => {
 }
 
 const qrcode = new window.QRCode('qr', {
-  width: 384,
-  height: 384,
+  width: 1000,
+  height: 1000,
   colorDark: '#000000',
   colorLight: '#ffffff',
   correctLevel: window.QRCode.CorrectLevel.H
